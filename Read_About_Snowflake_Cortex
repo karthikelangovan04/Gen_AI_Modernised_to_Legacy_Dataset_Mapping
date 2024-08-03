@@ -1,0 +1,309 @@
+Snowflake Cortex helps you use AI to quickly analyze data and build AI applications, without worrying about managing the underlying infrastructure.
+
+Snowflake customers can use Cortex for demand and cost forecasting, anomaly detection, summarization, translation, and more with basic SQL or Python queries. This makes data science and analytics easier and more accessible to data practitioners.
+
+This article will explore how Snowflake Cortex simplifies data science workflows by looking into its core offerings and benefits. We’ll also discuss its top use cases and pricing, and address some of the most commonly asked questions.
+
+Meet Atlan at the Snowflake Summit - Unlock exclusive experiences at Snowflake Summit! Sign up for a personalized demo, join us for an intimate customer dinner, or celebrate at an afterparty hosted by one of our partners. 👉 Meet us at the summit
+
+Table of contents
+What is Snowflake Cortex?
+Snowflake Cortex benefits
+Snowflake Cortex core capabilities
+Snowflake Cortex LLM Functions
+Snowflake Cortex ML Functions
+The role of metadata in delivering trustworthy insights with Snowflake Cortex
+Frequently Asked Questions
+Related Reads
+What is Snowflake Cortex?
+Snowflake Cortex is a fully-managed service offering AI and ML capabilities to Snowflake customers.
+
+You can use Snowflake Cortex for LLM use cases, predictive analysis, and building custom AI applications. It provides access to the top AI models and LLMs (large language models) from Mistral AI, Google, Meta, and more via SQL/Python serverless functions.
+
+Snowflake handles model optimization (fine-tuning the AI models to perform at their best) and GPU infrastructure management so that Snowflake users can focus on delivering value.
+
+Since May 2024, Snowflake Cortex is generally available and allows you to use LLMs in select regions.
+
+What LLMs does Snowflake Cortex use?
+Snowflake Cortex leverages high-performing LLMs from:
+
+Mistral AI and Google
+Snowflake Arctic (Snowflake’s open, enterprise-grade AI model)
+Meta Llama 3 (both 8B and 70B)
+Reka Core
+To choose the desired model, all you need to do is change the model name in the COMPLETE function, which is available in SQL and Python. Here’s the code snippet for SQL.
+
+SELECT SNOWFLAKE. CORTEX. COMPLETE (
+'snowflake-arctic'
+CONCAT ('Summarize this customer feedback in less than 100
+words.
+Put the product name, defect and summary in JSON format:
+< feedback>'
+content, '</ feedback>')
+FROM
+feedback LIMIT 10;
+What are the top use cases of Snowflake Cortex?
+Since Snowflake Cortex is still being developed, its use cases will keep evolving. As of now, the two most prominent use cases are:
+
+Text analytics to engage in intuitive conversations with your data and generate insights
+Document chatbots to streamline knowledge sharing, reduce information search time, and increase overall productivity
+If you’re keen on learning more about Snowflake Cortex use cases and exploring case studies (from Zoom, Vimeo, Rakuten, Kajabi, and more), check out the upcoming Snowflake Data Cloud Summit 2024.
+
+How much does Snowflake Cortex cost?
+The cost of Snowflake Cortex is compute-based, and it depends on the queries you run and the LLMs you use. It’s calculated by assessing the number of tokens processed, with each token representing approximately 4 text characters.
+
+Measuring the usage of functions in Snowflake Cortex
+
+You can track the credits used for Snowflake’s AI services with the help of the METERING_HISTORY View. Here’s the SQL syntax.
+
+SELECT *
+  FROM snowflake.account_usage.metering_daily_history
+  WHERE SERVICE_TYPE='AI_SERVICES'
+Snowflake Cortex benefits: Automating and democratizing data science for all
+Snowflake Cortex “enables organizations to expedite delivery of generative AI applications with LLMs while keeping their data in the Snowflake security and governance perimeter.“
+
+Some of the benefits include:
+
+Use high-performing LLMs to analyze text data from Snowflake within seconds
+Build a full-stack RAG application (such as document chatbots) in Snowflake
+Leverage a low-code interface to simplify complex data science processes and generate predictions and insights (like demand for resources, potential incidents)
+Understand and interpret model results easily, without requiring the expertise of an ML engineer
+Execute tasks such as translation, sentiment analysis, and summarization quickly for semi-structured and unstructured long-text data in Snowflake — product reviews, surveys, call transcripts, and more
+Leverage Snowflake’s existing security, scalability, and governance capabilities for workloads using Snowflake Cortex
+Next, let’s explore the fundamental capabilities of Snowflake Cortex.
+
+Snowflake Cortex core capabilities: What we know so far
+The core capabilities of Snowflake Cortex are:
+
+LLM Functions: Understand, query, translate, summarize, and generate text with SQL or Python functions and the LLM of your choice
+ML Functions: Perform predictive analysis to get insights from your Snowflake data assets using SQL functions
+Snowflake Cortex LLM and ML functions
+
+Snowflake Cortex LLM and ML functions - Source: Snowflake.
+
+The scalable infrastructure behind Snowflake Cortex also powers other AI offerings from Snowflake (currently in preview), such as:
+
+Snowflake Copilot: An AI-powered assistant for SQL querying in Snowflake, currently in public preview
+Document AI: An application to extract useful information from multiple PDFs using Snowflake’s LLM, currently in private preview
+Universal Search: A semantic search interface to find data and apps across your Snowflake account and the Marketplace, currently in public preview
+Now, let’s dig deeper into the various Snowflake Cortex LLM and ML functions.
+
+Snowflake Cortex LLM Functions
+The available Snowflake Cortex functions (in SQL) are:
+
+COMPLETE (to finish prompts)
+EMBED_TEXT_768 (to create vector embedding)
+EXTRACT_ANSWER (to procure an answer from unstructured or semi-structured text data)
+SENTIMENT (to gauge the mood or tone of text)
+SUMMARIZE (to get the synopsis of text)
+TRANSLATE (to translate text from one language to another)
+Let’s look into the specifics, syntax, and examples for each function.
+
+COMPLETE
+This function completes a prompt using the LLM you choose — a task that involves complex reasoning with your text data.
+
+Here’s the syntax, where <model> is the desired LLM and <prompt_or_history> is the prompt or conversation history that you want to complete.
+
+SNOWFLAKE.CORTEX.COMPLETE(
+    <model>, <prompt_or_history> [ , <options> ] )
+If you want to generate a single answer, here’s how you can use the COMPLETE function.
+
+SELECT SNOWFLAKE.CORTEX.COMPLETE('llama2-70b-chat', 'What is Snowflake Arctic?');
+Meanwhile, here’s an example if you want to generate multiple answers based on the data in a table’s column. A table named reviews contains a column named review_content featuring the text reviews from your users. The following query will return a critique of the first 10 reviews.
+
+SELECT SNOWFLAKE.CORTEX.COMPLETE(
+    'reka-core',
+        CONCAT('Critique this review in bullet points: <review>', content, '</review>')
+) FROM reviews LIMIT 10;
+EMBED_TEXT_768
+This function creates a vector embedding for English-language text. Vector embeddings numerically represent data, such as words, images, and structures.
+
+Here’s the syntax, where <model> is the desired LLM and <text> is the English-language text for which you wish to calculate a vector embedding.
+
+SNOWFLAKE.CORTEX.EMBED_TEXT_768( <model>, <text> )
+EXTRACT_ANSWER
+This function provides an answer to a question from a text document. The document can be an English-language document or a string representation of a semi-structured (JSON) data object.
+
+Here’s the syntax, where <source_document> is the document that might contain the answer to your <question>.
+
+SNOWFLAKE.CORTEX.EXTRACT_ANSWER(
+    <source_document>, <question>)
+Here’s an example of the syntax for this function in action.
+
+SELECT SNOWFLAKE.CORTEX.EXTRACT_ANSWER(review_content,
+    'Which months have generated sales above USD 10,000?')
+FROM reviews LIMIT 10;
+SENTIMENT
+This function returns sentiment as a score between -1 and 1 for an English-language input text. The score indicates the sentiment of the text, with -1 representing a very negative sentiment, 0 representing a neutral sentiment, and 1 representing a very positive sentiment.
+
+Here’s the syntax.
+
+SNOWFLAKE.CORTEX.SENTIMENT(<text>)
+You can use this function to gauge the reviews submitted by your customers.
+
+Let’s revisit the example of the table named reviews used to demonstrate the COMPLETE function. Running the following query for the table containing user reviews will provide a sentiment score for the first 10 reviews.
+
+SELECT SNOWFLAKE.CORTEX.SENTIMENT(review_content), review_content FROM reviews LIMIT 10;
+SUMMARIZE
+This function provides a summary of any English-language text. Here’s the syntax.
+
+SNOWFLAKE.CORTEX.SUMMARIZE(<text>)
+Using the previous example of the table named reviews, you can get a summary of the first 10 reviews when you run the following query.
+
+SELECT SNOWFLAKE.CORTEX.SUMMARIZE(review_content) FROM reviews LIMIT 10;
+TRANSLATE
+This function translates text into your target language. Here’s the syntax for the TRANSLATE function.
+
+SNOWFLAKE.CORTEX.TRANSLATE(
+    <text>, <source_language>, <target_language>)
+The list of languages supported by this function are as follows:
+
+English: ‘en’
+French: ‘fr’
+German: ‘de’
+Italian: ‘it’
+Japanese: ‘ja’
+Korean: ‘ko’
+Polish: ‘pl’
+Portuguese: ‘pt’
+Russian: ‘ru’
+Spanish: ‘es’
+Swedish: ‘sv’
+Here’s this function in action, using the same user reviews example — review_content is a column from the reviews table.
+
+SELECT SNOWFLAKE.CORTEX.TRANSLATE(review_content, 'en', 'ja') FROM reviews LIMIT 10;
+Notice how some LLM functions (like COMPLETE) let you choose a model? How do you decide which model is ideal for your use case?
+
+Let’s take a quick look at the advantages of each LLM available in Snowflake Cortex.
+
+How to choose an LLM model in Snowflake Cortex: A brief overview
+Snowflake Cortex offers large, medium, and small models — each ideal for specific use cases.
+
+Since each LLM has daily usage limits, and your compute costs will also vary depending on your chosen model, it’s prudent to pick the right AI model for your workflows.
+
+LLMs available inside Snowflake
+
+LLMs available inside Snowflake - Source: Snowflake Blog.
+
+Large models
+
+reka-core is Reka AI’s most advanced, multilingual LLM with strong reasoning and code generation capabilities.
+llama3-70b is an open-source model ideal for chat applications, content creation, and enterprise applications.
+mistral-large is Mistral AI’s most advanced LLM, ideal for complex tasks requiring extensive reasoning capabilities (synthetic text or code generation).
+Medium models
+
+snowflake-arctic is Snowflake’s enterprise-focused LLM, ideal for enterprise tasks such as SQL generation and coding.
+reka-flash is a multilingual language model optimized for quick, high-quality outcomes, such as writing blog posts, coding, and extracting answers from large documents.
+mixtral-8x7b is ideal for text generation, classification, and answering questions.
+llama2-70b-chat is suitable for tasks requiring low to moderate reasoning, such as extracting data or helping you write job descriptions.
+Small models
+
+llama3-8b is smaller than llama2-70b-chat, making it more efficient and faster, ideal for tasks such as text classification, summarization, and sentiment analysis.
+mistral-7b is ideal for generating simple summaries and answers.
+gemma-7b is suitable for simple code and text completion tasks.
+Now, let’s move on to the other core capability of Snowflake Cortex — ML functions.
+
+Snowflake Cortex ML Functions
+The available ML functions in Snowflake Cortex that you can use to deliver automated predictions and insights into your data are as follows:
+
+Time-series functions: Observe how a certain metric varies over time, relative to other features of your data and detect patterns to make predictions. The three time-series functions available in Snowflake Cortex are:
+Forecasting predicts future metric values from past trends in time-series data.
+Anomaly Detection flags outliers that deviate from the benchmark by comparing them to a forecast of the same time period.
+Contribution Explorer helps you find dimensions and values that affect a metric. For example, if you’re analyzing customer churn, this function can flag demographics, product usage patterns, or customer service interactions driving churn.
+Other analysis functions: These are ML functions that don’t use time-series data. For instance, Classification sorts rows into two or more classes using patterns detected in training data.
+Piecing it together: The role of metadata in delivering trustworthy insights with Snowflake Cortex
+Snowflake Cortex represents a significant step forward in democratizing AI and ML capabilities for businesses of all sizes.
+
+By eliminating the need for complex infrastructure setup and providing a user-friendly interface, Snowflake Cortex empowers Snowflake users to leverage AI for text analytics, predictive modeling, and custom application development.
+
+However, AI-powered results are only as good as the underlying data and metadata. The problem with enterprise AI tools is a lack of trust in the results they deliver.
+
+While AI-powered tools like Snowflake Cortex hold immense potential, the accuracy and reliability of their outputs are fundamentally tied to the quality of the data and metadata they process. Metadata provides context on data asset relationships, structures, and meanings across your data estate.
+
+Unlocking the complete potential of Snowflake Cortex is possible only when it can connect to all the tools in your data stack, understand and interpret metadata, and leverage it to provide accurate, trustworthy insights.
+
+Snowflake Cortex: Frequently Asked Questions (FAQs)
+1. Is Snowflake Cortex publicly available?
+As of March 27, 2024, Snowflake Cortex is in public preview. Snowflake Cortex LLM Functions are generally available.
+
+2. What are Snowflake Cortex LLM functions?
+Snowflake Cortex LLM functions help you speed up your SQL workflows with functions to complete your SQL query, translate it, summarize it, and more.
+
+These functions are provided as SQL functions and are also available in Python.
+
+3. How do I choose an LLM model in Snowflake Cortex?
+To achieve the best performance per credit, choose a model that’s a good match for the content size and complexity of your task.
+
+If you’re not sure where to start, try the most capable models first to establish a baseline.
+
+Depending on your use case, you can switch to medium models (which can handle a low to moderate amount of reasoning) or small models (suitable for simple tasks like code or text completion).
+
+4. What are the most common error messages received while using Snowflake Cortex LLM functions?
+According to Snowflake, here are the most common error messages received while using Snowflake Cortex LLM functions:
+
+too many requests: Excessive system load. Try again later.
+invalid options object: The object contains invalid options or values.
+budget exceeded: You’ve overshot your model consumption budget.
+unknown model “<model name>”: The model you’ve specified doesn’t exist (or isn’t a part of Snowflake Cortex)
+invalid language “<language>”: The language you’ve specified isn’t supported by the TRANSLATE function in Snowflake Cortex.
+max tokens of <count> exceeded:
+all requests were throttled by remote service: High usage has led to your request being throttled. Models used by Snowflake Cortex have limitations on size and inputs that exceed the limit result in an error. Try again later.
+5. What are Snowflake Cortex ML functions?
+Snowflake Cortex ML functions use machine learning to detect patterns in your data. Currently, time-series functions (forecasting, anomaly detection) and classification analysis functions are available.
+
+6. Are all Snowflake Cortex functions available to everyone?
+The COMPLETE function isn’t available to all regions on AWS and Azure. Here’s a snapshot of its availability across clouds and regions.
+
+COMPLETE function availability across AWS and Azure
+
+COMPLETE function availability across AWS and Azure - Source: Snowflake Documentation.
+
+The other LLM functions (SUMMARIZE, TRANSLATE, SENTIMENT, etc.) are available across all regions and cloud providers (AWS and Azure).
+
+7. Is Snowflake Cortex free?
+Snowflake Cortex itself is not free, but it does offer a free trial period. You can try Snowflake for free for 30 days, after which the costs will depend on usage.
+
+8. How can you calculate the costs of using Snowflake Cortex?
+Snowflake Cortex LLM functions incur a compute cost based on the number of tokens processed. As mentioned earlier, a token is roughly four text characters.
+
+The cost varies depending on the model and Cortex function being used. You should also note that some functions, like COMPLETE, SUMMARIZE, and TRANSLATE, count both input and output tokens. Others, like EXTRACT_ANSWER and SENTIMENT, only count input tokens.
+
+With that in mind, here’s how much it’ll cost to run different LLM functions across models.
+
+Snowflake Cortex LLM functions credits table
+
+Snowflake Cortex LLM functions credits table - Source: Snowflake.
+
+For instance, running the COMPLETE function on reka-core will cost 5.5 credits per 1M tokens. To put things in perspective, Snowflake’s Enterprise Edition, running on AWS (US East region), charges $3 per credit.
+
+For detailed information on pricing, we recommend contacting Snowflake account representatives directly.
+
+💡 Note: Snowflake Arctic is available free of charge until June 3, 2024.
+
+9. Are there any limitations to using Snowflake Cortex?
+Snowflake Cortex LLM functions have usage quotas. Inputs that exceed the limit (i.e., throttled requests) will result in an error. The models used also have their limitations, described as tokens (1 token is approximately 4 text characters).
+
+Usage quotas for Snowflake Cortex LLM functions
+
+Usage quotas for Snowflake Cortex LLM functions - Source: Snowflake Documentation.
+
+10. What about security, privacy, and governance for Snowflake Cortex?
+According to Snowflake, “workloads that leverage Snowflake Cortex solutions can benefit from Snowflake’s existing security, scalability, and governance capabilities.”
+
+Regarding the privacy and integrity of your data assets, Snowflake states that:
+
+It doesn’t use Customer Data to train any LLM to be used across customers.
+LLMs run inside Snowflake. So, your data never leaves the Snowflake service boundary or gets shared with any third-party provider.
+You can set up role-based access controls (RBAC) to manage access to Cortex LLM Functions. By default, the CORTEX_USER role is granted to the PUBLIC role. However, you can regulate it by revoking access to the PUBLIC role and granting access to specific roles.
+Snowflake Cortex: Related Reads
+Snowflake Horizon for Data Governance: Here’s Everything We Know So Far
+How to Set Up Data Governance for Snowflake: A Step-by-Step Guide
+Snowflake Copilot: Here’s Everything We Know So Far About This AI-Powered Assistant
+Snowflake Data Cloud Summit 2024: Get Ready and Fit for AI
+Snowflake Data Lineage: A Step-by-Step How to Guide
+How to Set Up a Data Catalog for Snowflake: A Step-by-Step Guide
+Snowflake Data Catalog: What, Why & How to Evaluate
+Snowflake Data Mesh: Step-by-Step Setup Guide
+Glossary for Snowflake: Shared Understanding Across Teams
+Personalized Data Discovery for Snowflake Data Assets
+Snowflake Data Dictionary
