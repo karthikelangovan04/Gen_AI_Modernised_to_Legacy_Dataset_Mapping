@@ -1,0 +1,1 @@
+This a Streamlit web application for comparing and mapping data between modernized and legacy tables in Snowflake. It uses AI models to analyze the data and generate mappings, with options for incorporating vector embeddings and sample data. The app allows users to input table information, select AI models and parameters, and view the generated prompts and AI responses.
